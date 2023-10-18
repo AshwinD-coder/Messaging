@@ -14,9 +14,11 @@ import citytech.usecases.signup.SignupUseCase;
 import citytech.usecases.signup.SignupUseCaseRequest;
 import citytech.usecases.signup.SignupUseCaseResponse;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.Produces;
 import jakarta.inject.Inject;
 
 import java.io.IOException;
@@ -37,20 +39,22 @@ public class UserController {
     }
 
     @Post("/signup")
+    @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SapatiAshwinResponse<Object>> signupUser(@Body SignupPayload signupPayload) throws IOException, URISyntaxException, InterruptedException {
         SignupUseCaseRequest signupUseCaseRequest = UserConverter.toSignupUseCaseRequest(signupPayload);
         Optional<SignupUseCaseResponse> signupUseCaseResponse = signupUseCase.execute(signupUseCaseRequest);
         if (signupUseCaseResponse.isPresent()) {
-            return HttpResponse.ok().body(new SapatiAshwinResponse<>().success(signupUseCaseResponse));
+            return HttpResponse.ok().body(new SapatiAshwinResponse<>().success(signupUseCaseResponse.get()));
         } else throw new SapatiAshwinException(SapatiAshwinExceptionType.RESPONSE_EMPTY);
     }
 
     @Post("login")
+    @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SapatiAshwinResponse<Object>> loginUser(@Body LoginPayload loginPayload) {
         LoginUseCaseRequest loginUseCaseRequest = UserConverter.toLoginUseCaseRequest(loginPayload);
         Optional<LoginUseCaseResponse> loginUseCaseResponse = loginUseCase.execute(loginUseCaseRequest);
         if (loginUseCaseResponse.isPresent()) {
-            return HttpResponse.ok().body(new SapatiAshwinResponse<>().success(loginUseCaseResponse));
+            return HttpResponse.ok().body(new SapatiAshwinResponse<>().success(loginUseCaseResponse.get()));
         } else throw new SapatiAshwinException(SapatiAshwinExceptionType.RESPONSE_EMPTY);
     }
 }

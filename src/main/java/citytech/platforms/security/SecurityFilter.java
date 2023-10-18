@@ -37,16 +37,10 @@ public class SecurityFilter implements HttpServerFilter {
         try {
             if (request.getMethod() == HttpMethod.OPTIONS) return Flowable.just(HttpResponse.ok());
             var token = request.getHeaders().get(TOKEN);
-            if (request.getPath().contains("/user/signup")) {
-                return chain.proceed(request);
-            }
-            if (request.getPath().contains("/user/login")) {
-                return chain.proceed(request);
-            }
-            if (request.getPath().contains("/rest-client/login")) {
-                return chain.proceed(request);
-            }
-            if (request.getPath().contains("/reverse-geocoding")) {
+            String path = request.getPath();
+            if (path.contains("/user/signup") || path.contains("/user/login") || path.contains("/rest-client/login")
+            || path.contains("/reverse-geocoding")
+            ) {
                 return chain.proceed(request);
             }
             if (Objects.isNull(token) || token.isEmpty()) {

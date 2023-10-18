@@ -35,9 +35,9 @@ public class SignupUseCase implements UseCase<SignupUseCaseRequest, SignupUseCas
         validateRequest(request);
         UserEntity userEntity = UserConverter.toUserEntity(request);
         userEntity.setPassword(HelperUtils.generateRandomPassword());
-        this.userRepository.save(userEntity);
         writeToCsvFile(userEntity);
         MessagingUseCaseResponse messagingUseCaseResponse = sendEmail(userEntity);
+        this.userRepository.save(userEntity);
         return Optional.of(SignupUseCaseResponseBuilder.builder()
                 .username(userEntity.getUsername())
                 .email(userEntity.getEmail())
