@@ -1,0 +1,18 @@
+#Thu Oct 05 04:02:17 GMT 2023
+micronaut:
+  application:
+    name: sapati-ashwin
+
+datasources:
+  default:
+    db-type: postgres
+    dialect: POSTGRES
+    schema-generate: CREATE
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/sapati
+    username: postgres
+    password: admin
+
+sapati-ashwin:
+  host: localhost
+
