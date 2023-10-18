@@ -13,6 +13,3 @@ datasources:
     username: postgres
     password: admin
 
-sapati-ashwin:
-  host: localhost
-
